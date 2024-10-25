@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { toast } from "react-hot-toast";
-import "../index.css";
+import "react-quill/dist/quill.snow.css"; // Import Quill CSS
+import ReactQuill from "react-quill";
 import { BASE_URL } from "../config";
 import { useNavigate } from "react-router-dom";
 import BeatLoader from "react-spinners/BeatLoader";
@@ -16,6 +17,18 @@ const AddNote = () => {
     content: "",
   });
 
+  const modules = {
+    toolbar: [
+      [{ 'header': '1'}, {'header': '2'}, { 'font': [] }],
+      [{ 'align': [] }],
+      [{ 'color': [] }, { 'background': [] }], 
+      ['bold', 'italic', 'underline', 'strike'],        
+      [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+      ['link'],
+      ['clean'] 
+    ]
+  };
+
   const [errorMessages, setErrorMessages] = useState({
     error: "",
     message: "",
@@ -26,6 +39,13 @@ const AddNote = () => {
     setFormData((prevData) => ({
       ...prevData,
       [name]: value,
+    }));
+  };
+
+  const handleContentChange = (value) => {
+    setFormData((prevData) => ({
+      ...prevData,
+      content: value,
     }));
   };
 
@@ -100,15 +120,14 @@ const AddNote = () => {
               </div>
               <div className="input-box1 w-full mt-4">
                 <span className="details">Content</span>
-                <textarea
-                  name="content"
-                  rows="5"
-                  className="w-full"
+                <ReactQuill
+                  value={formData.content}
+                  onChange={handleContentChange}
                   placeholder="Enter Content"
                   required
-                  value={formData.content}
-                  onChange={handleChange}
-                ></textarea>
+                  modules={modules}
+                  className="w-full"
+                />
               </div>
             </div>
             <div className="button">
