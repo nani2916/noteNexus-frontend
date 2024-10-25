@@ -4,6 +4,8 @@ import { useParams, useNavigate } from "react-router-dom";
 import Nav from "../components/Nav";
 import { BASE_URL } from "../config";
 import toast from "react-hot-toast";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
 
 const EditNote = () => {
   const { id } = useParams();
@@ -13,6 +15,18 @@ const EditNote = () => {
     title: "",
     content: "",
   });
+
+  const modules = {
+    toolbar: [
+      [{ 'header': '1'}, {'header': '2'}, { 'font': [] }],
+      [{ 'align': [] }],
+      [{ 'color': [] }, { 'background': [] }], 
+      ['bold', 'italic', 'underline', 'strike'],        
+      [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+      ['link'],
+      ['clean'] 
+    ]
+  };
 
   useEffect(() => {
     const fetchNote = async () => {
@@ -38,6 +52,13 @@ const EditNote = () => {
     setFormData((prevData) => ({
       ...prevData,
       [name]: value,
+    }));
+  };
+
+  const handleContentChange = (value) => {
+    setFormData((prevData) => ({
+      ...prevData,
+      content: value,
     }));
   };
 
@@ -82,12 +103,12 @@ const EditNote = () => {
               </div>
               <div className="input-box1 w-full pb-4">
                 <label className="text-[#CCBA78] block mb-2">Content</label>
-                <textarea
-                  name="content"
+                <ReactQuill
                   value={formData.content}
-                  onChange={handleChange}
-                  className="w-full p-2 h-48 border"
-                ></textarea>
+                  modules={modules}
+                  onChange={handleContentChange}
+                  className="h-48 mb-14"
+                />
               </div>
               <div className="flexcenter">
                 <div className="button w-full pr-5">
