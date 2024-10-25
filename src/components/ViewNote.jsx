@@ -3,12 +3,19 @@ import axios from "axios";
 import { useParams, useNavigate } from "react-router-dom"; 
 import Nav from "../components/Nav";
 import { BASE_URL } from "../config";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.bubble.css"; // Ensure to import the CSS for the bubble theme
 
 const ViewNote = () => {
   const { id } = useParams(); 
   const navigate = useNavigate(); 
   const [note, setNote] = useState(null);
   const [loading, setLoading] = useState(true);
+
+  // Define modules to include color options
+  const modules = {
+    toolbar: false, // Disable toolbar in read-only mode
+  };
 
   useEffect(() => {
     const fetchNote = async () => {
@@ -23,7 +30,7 @@ const ViewNote = () => {
     };
 
     fetchNote();
-  }, [id]); 
+  }, [id]);
 
   return (
     <div>
@@ -44,11 +51,13 @@ const ViewNote = () => {
               </div>
               <div className="input-box1 w-full pb-4">
                 <label className="text-[#CCBA78] block mb-2">Content</label>
-                <textarea
+                <ReactQuill
                   value={note?.content || ""}
-                  readOnly
-                  className="w-full p-2 h-48 border"
-                ></textarea>
+                  readOnly={true}
+                  theme="bubble"
+                  modules={modules}
+                  className="h-48 mb-4"
+                />
               </div>
             </div>
             <div className="button">
