@@ -11,7 +11,7 @@ const ViewNotes = () => {
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
-  const MAX_CONTENT_LENGTH = 10;
+  const MAX_CONTENT_LENGTH = 20;
 
   useEffect(() => {
     const fetchNotes = async () => {
@@ -68,9 +68,14 @@ const ViewNotes = () => {
                       <td className="w-full">{note.owner}</td>
                       <td className="w-full">{note.title}</td>
                       <td className="w-full">
-                        {note.content.length > MAX_CONTENT_LENGTH
-                          ? `${note.content.slice(0, MAX_CONTENT_LENGTH)}...`
-                          : note.content}
+                        <div
+                          dangerouslySetInnerHTML={{
+                            __html:
+                              note.content.length > MAX_CONTENT_LENGTH
+                                ? `${note.content.slice(0, MAX_CONTENT_LENGTH)}...`
+                                : note.content,
+                          }}
+                        />
                         {note.content.length > MAX_CONTENT_LENGTH && (
                           <button
                             onClick={() => handleView(note._id)}
@@ -85,28 +90,19 @@ const ViewNotes = () => {
                           onClick={() => handleView(note._id)}
                           className="mr-4 text-blue-500"
                         >
-                          <i
-                            className="fa fa-eye text-3xl"
-                            aria-hidden="true"
-                          ></i>
+                          <i className="fa fa-eye text-3xl" aria-hidden="true"></i>
                         </button>
                         <button
                           onClick={() => handleEdit(note._id)}
                           className="mr-4"
                         >
-                          <i
-                            className="fa fa-pencil text-3xl"
-                            aria-hidden="true"
-                          ></i>
+                          <i className="fa fa-pencil text-3xl" aria-hidden="true"></i>
                         </button>
                         <button
                           onClick={() => handleDelete(note._id)}
                           className="text-red-500"
                         >
-                          <i
-                            className="fa fa-trash text-3xl"
-                            aria-hidden="true"
-                          ></i>
+                          <i className="fa fa-trash text-3xl" aria-hidden="true"></i>
                         </button>
                       </td>
                     </tr>
